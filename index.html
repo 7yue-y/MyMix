@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIXING ENGINEER | PORTFOLIO</title>
+    <style>
+        /* --- 1. 全局变量与基础设置 --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1d1d1f;
+            --text-light: #86868b;
+            --accent: #000000;
+            --bar-bg: #e5e5e5;
+            --bar-height: 20px; /* 粗进度条，方便拖动 */
+            
+            /* 品牌色 */
+            --netease-red: #D31F27; 
+            --bilibili-pink: #FB7299;
+            --wechat-green: #07C160;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 120px;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { border: none; outline: none; background: none; font-family: inherit; cursor: pointer; }
+
+        .container {
+            max-width: 720px; /* 稍微加宽一点以容纳三列布局 */
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* --- 2. Header & 黑色胶囊按钮 (图1样式) --- */
+        header { margin-bottom: 60px; }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+        }
+
+        .intro {
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* 黑色胶囊按钮 */
+        .capsule-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .capsule-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- 3. 艺人跑马灯 (图2样式) --- */
+        .marquee-section {
+            margin-bottom: 60px;
+            overflow: hidden; /* 隐藏超出部分 */
+            position: relative;
+        }
+
+        .marquee-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .marquee-container {
+            display: flex;
+            width: fit-content;
+            animation: scroll 30s linear infinite; /* 滚动动画 */
+        }
+
+        .marquee-container:hover {
+            animation-play-state: paused; /* 悬停暂停 */
+        }
+
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .artist-name {
+            font-size: 1.1rem;
+            color: #444;
+            margin-right: 30px; /* 名字间距 */
+            font-weight: 400;
+        }
+
+        /* 滚动动画关键帧 */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* 移动一半距离，因为内容复制了一份 */
+        }
+
+        .open-disco-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #555;
+            transition: 0.2s;
+        }
+        .open-disco-btn:hover {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* --- 4. 分区标题 (通用) --- */
+        .section-divider {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- 5. 作品列表 (保持原有逻辑) --- */
+        .track-row {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f2f2f2;
+            position: relative;
+        }
+
+        .cover-art {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+            margin-right: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .track-info {
+            flex-grow: 1;
+            padding-right: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .track-title { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 3px; }
+        .track-desc { font-size: 0.8rem; color: var(--text-light); }
+
+        .control-group { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+        
+        .play-btn {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; color: var(--text-main); background: #fff; margin-bottom: 4px; transition: 0.2s;
+        }
+        .play-btn:hover { border-color: #000; transform: scale(1.05); }
+        .track-row.active .play-btn { background: #000; color: #fff; border-color: #000; }
+
+        .time-display { font-size: 0.7rem; color: #bbb; font-family: monospace; visibility: hidden; }
+        .track-row.active .time-display { visibility: visible; }
+
+        /* 进度条 */
+        .progress-wrapper {
+            position: absolute; bottom: 0; left: 65px; right: 0; height: 16px; 
+            cursor: pointer; display: none; align-items: flex-end; z-index: 5;
+        }
+        .track-row.active .progress-wrapper { display: flex; }
+        .progress-bg { width: 100%; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: #000; width: 0%; position: absolute; top:0; left:0; pointer-events: none; }
+
+        /* 分页 */
+        .pagination { display: flex; justify-content: center; gap: 20px; margin-top: 30px; font-size: 0.9rem; color: var(--text-light); }
+        .page-btn { color: var(--text-main); font-weight: 600; }
+        .page-btn:disabled { color: #eee; cursor: default; }
+
+
+        /* --- 6. 提供服务 (图3样式) --- */
+        .services-section {
+            margin-top: 60px;
+        }
+        
+        .services-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .service-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: 0.2s;
+        }
+
+        .service-card:hover {
+            background-color: #fafafa;
+        }
+
+        .service-icon {
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .service-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .service-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        /* --- 7. 底部社交 (复用之前的逻辑) --- */
+        .social-header-wrap { margin-top: 60px; }
+        .social-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        
+        .social-card {
+            display: flex; align-items: center; justify-content: space-between;
+            border: 1px solid #eee; border-radius: 12px; padding: 20px;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .social-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .social-icon-box {
+            width: 40px; height: 40px; border-radius: 50%; background: #f7f7f7;
+            display: flex; align-items: center; justify-content: center; margin-right: 15px;
+        }
+        
+        .card-netease:hover { border-color: var(--netease-red); }
+        .card-netease:hover .social-icon-box { background: var(--netease-red); color: #fff; }
+        
+        .card-bilibili:hover { border-color: var(--bilibili-pink); }
+        .card-bilibili:hover .social-icon-box { background: var(--bilibili-pink); color: #fff; }
+        
+        .card-wechat:hover { border-color: var(--wechat-green); }
+        .card-wechat:hover .social-icon-box { background: var(--wechat-green); color: #fff; }
+
+        /* --- 8. 微信弹窗 (图4样式 - 完美复刻) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* 背景暗一点 */
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: all; }
+
+        .modal-card {
+            background: #fff;
+            width: 440px;
+            border-radius: 24px; /* 大圆角 */
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .modal-overlay.show .modal-card { transform: scale(1); }
+
+        /* 顶部小头像 (可选，如果二维码自带头像可忽略) */
+        .modal-avatar {
+            width: 60px; height: 60px; border-radius: 50%;
+            margin: 0 auto 15px auto;
+            background: #eee; object-fit: cover;
+            display: none; /* 截图里没有单独头像，暂时隐藏 */
+        }
+
+        /* 二维码容器 */
+        .qr-container {
+            width: 350px;
+            height: 350px;
+            margin: 0 auto 20px auto;
+            background: #f0f0f0; /* 二维码加载前的背景 */
+        }
+        
+        .qr-image {
+            width: 100%; height: 100%; object-fit: contain;
+            display: block;
+        }
+
+        .modal-id {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .modal-desc {
+            font-size: 1.1rem; /* 图4中“扫一扫”字很大 */
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .modal-sub {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .modal-close-btn {
+            padding: 12px 50px;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: #333;
+            transition: 0.2s;
+        }
+        .modal-close-btn:hover {
+            background: #000; color: #fff; border-color: #000;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .marquee-container { animation-duration: 20s; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header>
+            <h1>My Exhibition of Works.</h1> 
+            <div class="intro">
+                FallingMoon -Guitarist<br>
+                Walpurgis -Producer<br>
+                擅长流行/前卫金属核风格的制作和混音
+            </div>
+            
+            <!-- 1. 修改后的黑色胶囊按钮 -->
+            <button class="capsule-btn" id="header-contact-btn">
+                查看联系方式 / Add WeChat
+            </button>
+        </header>
+
+
+
+        <!-- 2. 新增：艺人跑马灯 -->
+        <!-- <div class="marquee-section">
+            <div class="marquee-header">作品集</div> -->
+            
+            <!-- 跑马灯容器 -->
+            <!-- <div class="marquee-container"> -->
+                <!-- 内容复制两份以实现无缝滚动 -->
+                <!-- <div class="marquee-content">
+                    <span class="artist-name">FallingMoon</span>
+                    <span class="artist-name">Walpurgis</span>
+                    <span class="artist-name">发条乐亮</span>
+                    <span class="artist-name">Allo</span> -->
+
+                    <!-- 重复一轮保证衔接流畅 -->
+                    <!-- <span class="artist-name">FallingMoon</span>
+                    <span class="artist-name">Walpurgis</span>
+                    <span class="artist-name">发条乐亮</span>
+                    <span class="artist-name">Allo</span>
+                </div>
+            </div> -->
+
+            <!-- 按钮 -->
+            <!-- <a href="#" class="open-disco-btn">open discography</a>
+        </div> -->
+
+
+        <!-- 作品播放列表 (Some Works) -->
+        <div class="section-divider">Some Works / 部分作品</div>
+        <div id="track-list"></div>
+        <div class="pagination">
+            <button id="prev-btn" class="page-btn">← PREV</button>
+            <span id="page-info">1 / 1</span>
+            <button id="next-btn" class="page-btn">NEXT →</button>
+        </div>
+
+
+        <!-- 3. 新增：提供业务 -->
+        <div class="services-section">
+            <div class="services-title">提供业务</div>
+            <div class="services-grid">
+                
+                <!-- 卡片1: 混音 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                    </div>
+                    <div class="service-info">
+                        <h4>Mixing 混音</h4>
+                        <!-- <p>2-Track / Stem / Atmos / Live</p>-->
+                    </div>
+                </div>
+
+                <!-- 卡片2: 母带 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+                    </div>
+                    <div class="service-info">
+                        <h4>Mastering 母带</h4>
+                        <!-- <p>Single / EP / Album</p>-->
+                    </div>
+                </div>
+
+                <!-- 卡片3: 吉他录音 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M6 12v-3"></path><path d="M10 12v-6"></path><path d="M14 12v-8"></path><path d="M18 12v-4"></path><path d="M6 12v4"></path><path d="M10 12v5"></path><path d="M14 12v2"></path><path d="M18 12v6"></path></svg>
+                    </div>
+                    <div class="service-info">
+                        <h4>Guitar Recording  吉他录音</h4>
+                        <!--<p>FX / Foley / Atmos</p>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 底部社交卡片 -->
+        <div class="section-divider social-header-wrap">Contact & Releases / 更多发布内容& 联系</div>
+
+        <div class="social-grid">
+            <!-- 网易云 -->
+            <a href="https://music.163.com/#/user/home?id=YOUR_USER_ID" target="_blank" class="social-card card-netease">
+                <div style="display:flex; align-items:center;">
+                    <div class="social-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size:1rem; font-weight:600;">网易云音乐</h3>
+                        <p style="font-size:0.8rem; color:#999;">收听混音/编曲作品集</p>
+                    </div>
+                </div>
+                <div style="color:#ccc;">→</div>
+            </a>
+
+            <!-- Bilibili -->
+            <a href="https://space.bilibili.com/617201950?spm_id_from=333.1007.0.0" target="_blank" class="social-card card-bilibili">
+                <div style="display:flex; align-items:center;">
+                    <div class="social-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size:1rem; font-weight:600;">Bilibili</h3>
+                        <p style="font-size:0.8rem; color:#999;">查看视频投稿与演示</p>
+                    </div>
+                </div>
+                <div style="color:#ccc;">→</div>
+            </a>
+
+            <!-- 微信 -->
+            <div class="social-card card-wechat" id="card-contact-btn">
+                <div style="display:flex; align-items:center;">
+                    <div class="social-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10C17 10 19 8 19 5.5C19 3 17 2 17 2"></path><path d="M8 10C8 10 8 10 8 10C8 10 6 8 6 5.5C6 3 8 2 8 2"></path><rect x="3" y="14" width="18" height="8" rx="2"></rect></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size:1rem; font-weight:600;">WeChat</h3>
+                        <p style="font-size:0.8rem; color:#999;">添加微信咨询报价</p>
+                    </div>
+                </div>
+                <div style="color:#ccc;">→</div>
+            </div>
+        </div>
+
+
+        <!-- 4. 重构后的微信弹窗 (图4样式) -->
+        <div class="modal-overlay" id="qr-modal">
+            <div class="modal-card">
+                
+                <!-- 二维码部分 -->
+                <div class="qr-container">
+                    <!-- 请替换这里为你真实的二维码图片 -->
+                    <img src="Picture/WeChat.png" alt="QR Code" class="qr-image">
+                </div>
+
+                <!-- 文本部分 -->
+                <div class="modal-id">qiyue_0602</div>
+                <div class="modal-desc">扫一扫添加微信</div>
+                <div class="modal-sub">请注明来意</div>
+
+                <!-- 关闭按钮 -->
+                <button class="modal-close-btn" id="close-modal">关闭</button>
+            </div>
+        </div>
+
+        <audio id="main-audio"></audio>
+    </div>
+
+    <!-- JavaScript 逻辑 (保持不变) -->
+    <script>
+        // --- 歌曲数据 ---
+        const allTracks = [
+            {
+                title: "眠",
+                desc: "Pop / Produce & Mixing",
+                cover: "Picture/眠-封面.jpg",
+                url: "Audio/眠_FinMix_9.8.mp3"
+            },
+            {
+                title: "Blossom",
+                desc: "ProgMetal / Produce",
+                cover: "Picture/Blossom-封面.jpg",
+                url: "Audio/Blossom.mp3"
+            }
+        ];
+
+        // --- 逻辑控制 ---
+        const ITEMS_PER_PAGE = 5;
+        let currentPage = 1;
+        let currentPlayingUrl = null; 
+        let isDragging = false; 
+        let activeProgressWrapper = null; 
+
+        const audio = document.getElementById('main-audio');
+        const listContainer = document.getElementById('track-list');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageInfo = document.getElementById('page-info');
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function renderTracks() {
+            listContainer.innerHTML = '';
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const tracksToShow = allTracks.filter(t => t.title).slice(startIndex, endIndex);
+            const totalPages = Math.ceil(allTracks.filter(t => t.title).length / ITEMS_PER_PAGE);
+
+            tracksToShow.forEach((track) => {
+                const isActive = (currentPlayingUrl === track.url);
+                const row = document.createElement('div');
+                row.className = `track-row ${isActive ? 'active' : ''}`;
+                
+                row.innerHTML = `
+                    <img src="${track.cover}" class="cover-art" alt="cover" onerror="this.style.backgroundColor='#eee'">
+                    <div class="track-info">
+                        <div class="track-title">${track.title}</div>
+                        <div class="track-desc">${track.desc}</div>
+                    </div>
+                    <div class="control-group">
+                        <div class="play-btn">${isActive && !audio.paused ? '❚❚' : '▶'}</div>
+                        <div class="time-display">0:00 / 0:00</div>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress-bg"><div class="progress-fill" style="width: 0%"></div></div>
+                    </div>
+                `;
+
+                row.querySelector('.play-btn').addEventListener('click', (e) => { e.stopPropagation(); togglePlay(track.url, row); });
+
+                const progressWrapper = row.querySelector('.progress-wrapper');
+                const startDrag = (e) => {
+                    if(!isActive) return;
+                    e.preventDefault(); isDragging = true; activeProgressWrapper = progressWrapper;
+                    seekAudio(e, progressWrapper);
+                };
+                progressWrapper.addEventListener('mousedown', startDrag);
+                progressWrapper.addEventListener('touchstart', startDrag, { passive: false });
+
+                listContainer.appendChild(row);
+            });
+
+            pageInfo.textContent = totalPages > 0 ? `${currentPage} / ${totalPages}` : "1 / 1";
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage >= totalPages;
+            if(currentPlayingUrl) updateProgressBarUI();
+        }
+
+        // 全局拖动逻辑
+        document.addEventListener('mousemove', (e) => { if(isDragging && activeProgressWrapper) seekAudio(e, activeProgressWrapper); });
+        document.addEventListener('mouseup', () => { isDragging = false; activeProgressWrapper = null; });
+        document.addEventListener('touchmove', (e) => { if(isDragging && activeProgressWrapper) seekAudio(e, activeProgressWrapper); }, { passive: false });
+        document.addEventListener('touchend', () => { isDragging = false; activeProgressWrapper = null; });
+
+        function togglePlay(url, rowElement) {
+            if (currentPlayingUrl === url) {
+                if (audio.paused) { audio.play(); rowElement.querySelector('.play-btn').textContent = '❚❚'; }
+                else { audio.pause(); rowElement.querySelector('.play-btn').textContent = '▶'; }
+            } else {
+                currentPlayingUrl = url; audio.src = url; audio.play(); renderTracks(); 
+            }
+        }
+
+        function seekAudio(e, wrapper) {
+            const rect = wrapper.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clickX = clientX - rect.left;
+            if (clickX < 0) clickX = 0; if (clickX > rect.width) clickX = rect.width;
+            if (audio.duration) audio.currentTime = (clickX / rect.width) * audio.duration;
+        }
+
+        function updateProgressBarUI() {
+            const activeRow = document.querySelector('.track-row.active');
+            if (activeRow && audio.duration) {
+                activeRow.querySelector('.progress-fill').style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+                activeRow.querySelector('.time-display').innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+                activeRow.querySelector('.play-btn').textContent = audio.paused ? '▶' : '❚❚';
+            }
+        }
+
+        prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTracks(); } });
+        nextBtn.addEventListener('click', () => { const total = Math.ceil(allTracks.filter(t => t.title).length / ITEMS_PER_PAGE); if (currentPage < total) { currentPage++; renderTracks(); } });
+        audio.addEventListener('timeupdate', updateProgressBarUI);
+        audio.addEventListener('ended', renderTracks);
+
+        // 弹窗逻辑
+        const modal = document.getElementById('qr-modal');
+        const openBtns = [document.getElementById('header-contact-btn'), document.getElementById('card-contact-btn')];
+        const closeBtn = document.getElementById('close-modal');
+
+        openBtns.forEach(btn => btn?.addEventListener('click', () => modal.classList.add('show')));
+        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+        renderTracks();
+    </script>
+</body>
+</html>
