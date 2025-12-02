@@ -8,11 +8,12 @@
         /* --- 1. 全局变量与基础设置 --- */
         :root {
             --bg-color: #ffffff;
-            --text-main: #1d1d1f;
-            --text-light: #86868b;
+            --text-main: #1d1d1f;      /* 标题黑 */
+            --text-medium: #555555;    /* 中间色（艺人名） */
+            --text-light: #86868b;     /* 描述灰 */
             --accent: #000000;
             --bar-bg: #e5e5e5;
-            --bar-height: 20px; /* 粗进度条，方便拖动 */
+            --bar-height: 20px;
             
             /* 品牌色 */
             --netease-red: #D31F27; 
@@ -34,12 +35,12 @@
         button { border: none; outline: none; background: none; font-family: inherit; cursor: pointer; }
 
         .container {
-            max-width: 720px; /* 稍微加宽一点以容纳三列布局 */
+            max-width: 720px;
             margin: 0 auto;
             padding: 80px 20px;
         }
 
-        /* --- 2. Header & 黑色胶囊按钮 (图1样式) --- */
+        /* --- 2. Header --- */
         header { margin-bottom: 60px; }
         
         h1 {
@@ -56,7 +57,7 @@
             margin-bottom: 25px;
         }
 
-        /* 黑色胶囊按钮 */
+        /* 黑色胶囊按钮 (联系方式) */
         .capsule-btn {
             display: inline-flex;
             align-items: center;
@@ -69,34 +70,56 @@
             font-weight: 500;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
         .capsule-btn:hover {
             transform: scale(1.02);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* --- 3. 艺人跑马灯 (图2样式) --- */
+        /* --- 3. 合作案例 (跑马灯) --- */
         .marquee-section {
             margin-bottom: 60px;
-            overflow: hidden; /* 隐藏超出部分 */
+            overflow: hidden;
             position: relative;
         }
 
-        .marquee-header {
+        /* 标题栏 Flex 布局 */
+        .marquee-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .marquee-title {
             font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 20px;
             color: var(--text-main);
         }
 
+        /* Open Discography 按钮 */
+        .open-disco-btn {
+            font-size: 0.85rem;
+            padding: 6px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            color: #666;
+            transition: 0.2s;
+        }
+        .open-disco-btn:hover {
+            border-color: #000;
+            color: #000;
+            background: #f9f9f9;
+        }
+
+        /* 跑马灯容器 */
         .marquee-container {
             display: flex;
             width: fit-content;
-            animation: scroll 30s linear infinite; /* 滚动动画 */
+            animation: scroll 40s linear infinite; 
         }
 
         .marquee-container:hover {
-            animation-play-state: paused; /* 悬停暂停 */
+            animation-play-state: paused;
         }
 
         .marquee-content {
@@ -105,35 +128,28 @@
             white-space: nowrap;
         }
 
-        .artist-name {
+        .artist-item {
             font-size: 1.1rem;
             color: #444;
-            margin-right: 30px; /* 名字间距 */
             font-weight: 400;
+            display: inline-flex;
+            align-items: center;
         }
 
-        /* 滚动动画关键帧 */
+        /* 分隔圆点 */
+        .separator {
+            color: #ccc; 
+            margin: 0 15px; 
+            font-size: 0.8rem;
+        }
+
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* 移动一半距离，因为内容复制了一份 */
+            100% { transform: translateX(-50%); } 
         }
 
-        .open-disco-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 8px 20px;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #555;
-            transition: 0.2s;
-        }
-        .open-disco-btn:hover {
-            border-color: #000;
-            color: #000;
-        }
 
-        /* --- 4. 分区标题 (通用) --- */
+        /* --- 4. 分区标题 --- */
         .section-divider {
             margin-top: 0;
             margin-bottom: 20px;
@@ -143,7 +159,8 @@
             text-transform: uppercase;
         }
 
-        /* --- 5. 作品列表 (保持原有逻辑) --- */
+
+        /* --- 5. 作品列表 --- */
         .track-row {
             display: flex;
             align-items: center;
@@ -153,8 +170,8 @@
         }
 
         .cover-art {
-            width: 50px;
-            height: 50px;
+            width: 55px; 
+            height: 55px;
             border-radius: 6px;
             object-fit: cover;
             background-color: #f5f5f5;
@@ -169,10 +186,25 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            gap: 2px; 
         }
 
-        .track-title { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 3px; }
-        .track-desc { font-size: 0.8rem; color: var(--text-light); }
+        .track-title { 
+            font-size: 1.05rem; 
+            font-weight: 600; 
+            color: var(--text-main); 
+        }
+
+        .track-artist {
+            font-size: 0.9rem;
+            color: var(--text-medium); 
+            font-weight: 500;
+        }
+
+        .track-desc { 
+            font-size: 0.8rem; 
+            color: var(--text-light); 
+        }
 
         .control-group { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
         
@@ -189,174 +221,144 @@
 
         /* 进度条 */
         .progress-wrapper {
-            position: absolute; bottom: 0; left: 65px; right: 0; height: 16px; 
+            position: absolute; bottom: 0; left: 70px; right: 0; height: 16px; 
             cursor: pointer; display: none; align-items: flex-end; z-index: 5;
         }
         .track-row.active .progress-wrapper { display: flex; }
         .progress-bg { width: 100%; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; position: relative; }
         .progress-fill { height: 100%; background: #000; width: 0%; position: absolute; top:0; left:0; pointer-events: none; }
 
-        /* 分页 */
         .pagination { display: flex; justify-content: center; gap: 20px; margin-top: 30px; font-size: 0.9rem; color: var(--text-light); }
         .page-btn { color: var(--text-main); font-weight: 600; }
         .page-btn:disabled { color: #eee; cursor: default; }
 
 
-        /* --- 6. 提供服务 (图3样式) --- */
-        .services-section {
-            margin-top: 60px;
-        }
-        
-        .services-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
+        /* --- 6. 提供业务 --- */
+        .services-section { margin-top: 60px; }
+        .services-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .service-card {
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            transition: 0.2s;
+            border: 1px solid #eee; border-radius: 12px; padding: 20px;
+            display: flex; align-items: flex-start; gap: 15px; transition: 0.2s;
         }
+        .service-card:hover { background-color: #fafafa; }
+        .service-icon { font-size: 1.5rem; color: var(--text-main); }
+        .service-info h4 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+        .service-info p { font-size: 0.8rem; color: var(--text-light); line-height: 1.4; }
 
-        .service-card:hover {
-            background-color: #fafafa;
-        }
 
-        .service-icon {
-            font-size: 1.5rem;
-            color: var(--text-main);
-        }
-
-        .service-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        
-        .service-info p {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            line-height: 1.4;
-        }
-
-        /* --- 7. 底部社交 (复用之前的逻辑) --- */
+        /* --- 7. 底部社交 --- */
         .social-header-wrap { margin-top: 60px; }
         .social-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        
         .social-card {
             display: flex; align-items: center; justify-content: space-between;
             border: 1px solid #eee; border-radius: 12px; padding: 20px;
             transition: all 0.2s; cursor: pointer;
         }
         .social-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        
         .social-icon-box {
             width: 40px; height: 40px; border-radius: 50%; background: #f7f7f7;
             display: flex; align-items: center; justify-content: center; margin-right: 15px;
         }
-        
         .card-netease:hover { border-color: var(--netease-red); }
         .card-netease:hover .social-icon-box { background: var(--netease-red); color: #fff; }
-        
         .card-bilibili:hover { border-color: var(--bilibili-pink); }
         .card-bilibili:hover .social-icon-box { background: var(--bilibili-pink); color: #fff; }
-        
         .card-wechat:hover { border-color: var(--wechat-green); }
         .card-wechat:hover .social-icon-box { background: var(--wechat-green); color: #fff; }
 
-        /* --- 8. 微信弹窗 (图4样式 - 完美复刻) --- */
+
+        /* --- 8. 模态框通用逻辑 --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* 背景暗一点 */
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(5px);
             z-index: 1000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+            display: none; 
+            opacity: 0; transition: opacity 0.3s;
         }
-        .modal-overlay.show { opacity: 1; pointer-events: all; }
-
-        .modal-card {
-            background: #fff;
-            width: 440px;
-            border-radius: 24px; /* 大圆角 */
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .modal-overlay.show { display: flex; opacity: 1; }
+        
+        .modal-center-content {
+            margin: auto;
+            background: #fff; width: 440px; border-radius: 24px;
+            padding: 40px 30px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
             position: relative;
         }
-        .modal-overlay.show .modal-card { transform: scale(1); }
-
-        /* 顶部小头像 (可选，如果二维码自带头像可忽略) */
-        .modal-avatar {
-            width: 60px; height: 60px; border-radius: 50%;
-            margin: 0 auto 15px auto;
-            background: #eee; object-fit: cover;
-            display: none; /* 截图里没有单独头像，暂时隐藏 */
-        }
-
-        /* 二维码容器 */
-        .qr-container {
-            width: 350px;
-            height: 350px;
-            margin: 0 auto 20px auto;
-            background: #f0f0f0; /* 二维码加载前的背景 */
+        .modal-overlay.show .modal-center-content { animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        .modal-full-content {
+            width: 100%; height: 100%;
+            overflow-y: auto; 
+            padding: 40px 20px;
+            display: flex; flex-direction: column; align-items: center;
         }
         
-        .qr-image {
-            width: 100%; height: 100%; object-fit: contain;
-            display: block;
+        /* --- 9. Discography Grid (作品集样式) --- */
+        .disco-header {
+            width: 100%; max-width: 900px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 40px; padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
         }
-
-        .modal-id {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 5px;
-        }
-
-        .modal-desc {
-            font-size: 1.1rem; /* 图4中“扫一扫”字很大 */
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+        .disco-title { font-size: 1.5rem; font-weight: 700; }
+        
+        .disco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 40px 30px;
+            width: 100%; max-width: 900px;
         }
         
-        .modal-sub {
-            font-size: 0.9rem;
-            color: #999;
-            margin-bottom: 30px;
+        /* 修改为 a 标签后的样式，保持卡片感，去除链接默认样式 */
+        .album-card {
+            display: flex; flex-direction: column;
+            transition: transform 0.2s;
+            text-decoration: none; /* 去除下划线 */
+            color: inherit; /* 继承文字颜色 */
+            cursor: pointer;
+        }
+        .album-card:hover { transform: translateY(-5px); }
+
+        .album-cover {
+            width: 100%; aspect-ratio: 1/1; 
+            border-radius: 12px;
+            object-fit: cover;
+            background: #f0f0f0;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: box-shadow 0.2s;
+        }
+        .album-card:hover .album-cover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* 悬停时阴影加深 */
         }
 
-        .modal-close-btn {
-            padding: 12px 50px;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            font-size: 1rem;
-            color: #333;
-            transition: 0.2s;
-        }
-        .modal-close-btn:hover {
-            background: #000; color: #fff; border-color: #000;
-        }
+        .album-title { font-size: 1.05rem; font-weight: 700; color: #000; margin-bottom: 4px; line-height: 1.3; }
+        .album-artist { font-size: 0.9rem; color: #666; margin-bottom: 4px; }
+        .album-role { font-size: 0.8rem; color: #999; }
 
-        /* 移动端适配 */
+        .modal-close-corner {
+            padding: 8px 24px; border: 1px solid #ccc; border-radius: 20px;
+            cursor: pointer; font-size: 0.9rem; transition: 0.2s;
+        }
+        .modal-close-corner:hover { border-color: #000; background: #000; color: #fff; }
+
+        .qr-container { width: 300px; height: 300px; margin: 0 auto 20px auto; background: #f0f0f0; }
+        .qr-image { width: 100%; height: 100%; object-fit: contain; }
+        .modal-id { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+        .modal-desc { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+        .modal-sub { font-size: 0.9rem; color: #999; margin-bottom: 30px; }
+        .modal-close-btn { padding: 12px 50px; border: 1px solid #e0e0e0; border-radius: 50px; cursor: pointer; transition: 0.2s; }
+        .modal-close-btn:hover { background: #000; color: #fff; border-color: #000; }
+
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
         @media (max-width: 600px) {
             .services-grid { grid-template-columns: 1fr; }
-            .marquee-container { animation-duration: 20s; }
+            .disco-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 15px; } 
         }
-
     </style>
 </head>
 <body>
@@ -369,44 +371,39 @@
             <div class="intro">
                 FallingMoon -Guitarist<br>
                 Walpurgis -Producer<br>
-                擅长流行/前卫金属核风格的制作和混音
+                擅长流行摇滚/前卫金属核风格的制作和混音
             </div>
             
-            <!-- 1. 修改后的黑色胶囊按钮 -->
             <button class="capsule-btn" id="header-contact-btn">
                 查看联系方式 / Add WeChat
             </button>
         </header>
 
 
-
-        <!-- 2. 新增：艺人跑马灯 -->
-        <!-- <div class="marquee-section">
-            <div class="marquee-header">作品集</div> -->
+        <!-- 合作案例 (跑马灯) + 按钮 -->
+        <div class="marquee-section">
+            <div class="marquee-header-row">
+                <div class="marquee-title">合作案例</div>
+                <button class="open-disco-btn" id="open-disco-btn">open discography</button>
+            </div>
             
-            <!-- 跑马灯容器 -->
-            <!-- <div class="marquee-container"> -->
-                <!-- 内容复制两份以实现无缝滚动 -->
-                <!-- <div class="marquee-content">
-                    <span class="artist-name">FallingMoon</span>
-                    <span class="artist-name">Walpurgis</span>
-                    <span class="artist-name">发条乐亮</span>
-                    <span class="artist-name">Allo</span> -->
-
-                    <!-- 重复一轮保证衔接流畅 -->
-                    <!-- <span class="artist-name">FallingMoon</span>
-                    <span class="artist-name">Walpurgis</span>
-                    <span class="artist-name">发条乐亮</span>
-                    <span class="artist-name">Allo</span>
+            <!-- <div class="marquee-container">
+                <div class="marquee-content">
+                    <span class="artist-item">FallingMoon</span> <span class="separator">•</span>
+                    <span class="artist-item">Walpurgis</span> <span class="separator">•</span>
+                    <span class="artist-item">发条乐亮</span> <span class="separator">•</span>
+                    <span class="artist-item">Allo</span> <span class="separator">•</span>
+                    
+                    <span class="artist-item">FallingMoon</span> <span class="separator">•</span>
+                    <span class="artist-item">Walpurgis</span> <span class="separator">•</span>
+                    <span class="artist-item">发条乐亮</span> <span class="separator">•</span>
+                    <span class="artist-item">Allo</span> <span class="separator">•</span>
                 </div>
-            </div> -->
-
-            <!-- 按钮 -->
-            <!-- <a href="#" class="open-disco-btn">open discography</a>
+            </div>
         </div> -->
 
 
-        <!-- 作品播放列表 (Some Works) -->
+        <!-- 作品播放列表 -->
         <div class="section-divider">Some Works / 部分作品</div>
         <div id="track-list"></div>
         <div class="pagination">
@@ -416,44 +413,34 @@
         </div>
 
 
-        <!-- 3. 新增：提供业务 -->
+        <!-- 提供业务 -->
         <div class="services-section">
             <div class="services-title">提供业务</div>
             <div class="services-grid">
-                
-                <!-- 卡片1: 混音 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
                     </div>
                     <div class="service-info">
                         <h4>Mixing 混音</h4>
-                        <!-- <p>2-Track / Stem / Atmos / Live</p>-->
                     </div>
                 </div>
-
-                <!-- 卡片2: 母带 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
                     </div>
                     <div class="service-info">
                         <h4>Mastering 母带</h4>
-                        <!-- <p>Single / EP / Album</p>-->
                     </div>
                 </div>
-
-                <!-- 卡片3: 吉他录音 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M6 12v-3"></path><path d="M10 12v-6"></path><path d="M14 12v-8"></path><path d="M18 12v-4"></path><path d="M6 12v4"></path><path d="M10 12v5"></path><path d="M14 12v2"></path><path d="M18 12v6"></path></svg>
                     </div>
                     <div class="service-info">
-                        <h4>Guitar Recording  吉他录音</h4>
-                        <!--<p>FX / Foley / Atmos</p>-->
+                        <h4>Guitar Recording 吉他录音</h4>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -462,7 +449,6 @@
         <div class="section-divider social-header-wrap">Contact & Releases / 更多发布内容& 联系</div>
 
         <div class="social-grid">
-            <!-- 网易云 -->
             <a href="https://music.163.com/#/user/home?id=YOUR_USER_ID" target="_blank" class="social-card card-netease">
                 <div style="display:flex; align-items:center;">
                     <div class="social-icon-box">
@@ -475,9 +461,7 @@
                 </div>
                 <div style="color:#ccc;">→</div>
             </a>
-
-            <!-- Bilibili -->
-            <a href="https://space.bilibili.com/617201950?spm_id_from=333.1007.0.0" target="_blank" class="social-card card-bilibili">
+            <a href="https://space.bilibili.com/617201950" target="_blank" class="social-card card-bilibili">
                 <div style="display:flex; align-items:center;">
                     <div class="social-icon-box">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -489,8 +473,6 @@
                 </div>
                 <div style="color:#ccc;">→</div>
             </a>
-
-            <!-- 微信 -->
             <div class="social-card card-wechat" id="card-contact-btn">
                 <div style="display:flex; align-items:center;">
                     <div class="social-icon-box">
@@ -506,46 +488,106 @@
         </div>
 
 
-        <!-- 4. 重构后的微信弹窗 (图4样式) -->
-        <div class="modal-overlay" id="qr-modal">
-            <div class="modal-card">
-                
-                <!-- 二维码部分 -->
+        <!-- 微信弹窗 -->
+        <div class="modal-overlay" id="wechat-modal">
+            <div class="modal-center-content">
                 <div class="qr-container">
-                    <!-- 请替换这里为你真实的二维码图片 -->
                     <img src="Picture/WeChat.png" alt="QR Code" class="qr-image">
                 </div>
-
-                <!-- 文本部分 -->
                 <div class="modal-id">qiyue_0602</div>
                 <div class="modal-desc">扫一扫添加微信</div>
                 <div class="modal-sub">请注明来意</div>
+                <button class="modal-close-btn" id="close-wechat">关闭</button>
+            </div>
+        </div>
 
-                <!-- 关闭按钮 -->
-                <button class="modal-close-btn" id="close-modal">关闭</button>
+        <!-- 作品集弹窗 -->
+        <div class="modal-overlay" id="disco-modal">
+            <div class="modal-full-content">
+                <div class="disco-header">
+                    <div class="disco-title">discography</div>
+                    <button class="modal-close-corner" id="close-disco">close</button>
+                </div>
+                
+                <div class="disco-grid" id="disco-grid"></div>
             </div>
         </div>
 
         <audio id="main-audio"></audio>
     </div>
 
-    <!-- JavaScript 逻辑 (保持不变) -->
     <script>
-        // --- 歌曲数据 ---
+        // --- 1. 歌曲播放列表数据 ---
         const allTracks = [
             {
                 title: "眠",
+                artist: "Allo", 
                 desc: "Pop / Produce & Mixing",
                 cover: "Picture/眠-封面.jpg",
                 url: "Audio/眠_FinMix_9.8.mp3"
             },
             {
                 title: "Blossom",
+                artist: "FallingMoon",
                 desc: "ProgMetal / Produce",
                 cover: "Picture/Blossom-封面.jpg",
                 url: "Audio/Blossom.mp3"
-            }
+            },
+            {
+                title: "天球のMúsica(LiveCover)",
+                artist: "MOLOMOGO",
+                desc: "Acg / Mix",
+                cover: "Picture/天球のMúsica-封面.jpg",
+                url: "Audio/《天球(そら)のMúsica》_02.mp3"
+            },
         ];
+
+        // --- 2. 作品集数据 (新增 link 字段) ---
+        // 请替换为您真实的网易云音乐链接
+        // const discographyData = [
+        //     { 
+        //         title: "于是我闭上了双眼", 
+        //         artist: "特污兔-Dirtyrabbit2", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album1.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678" // 替换这里
+        //     },
+        //     { 
+        //         title: "Bohemian Rhapsody", 
+        //         artist: "Lost in Forever", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album2.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678"
+        //     },
+        //     { 
+        //         title: "洪", 
+        //         artist: "Lost in Forever ft.破坏电路", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album3.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678"
+        //     },
+        //     { 
+        //         title: "City No Pop - 都市不丽人", 
+        //         artist: "ChiliChill", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album4.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678"
+        //     },
+        //     { 
+        //         title: "LIF - I", 
+        //         artist: "Lost in Forever", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album5.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678"
+        //     },
+        //     { 
+        //         title: "Hourglass", 
+        //         artist: "Elysium极乐境界", 
+        //         role: "Mix & Master · 2025", 
+        //         cover: "Picture/album6.jpg", 
+        //         link: "https://music.163.com/#/song?id=12345678"
+        //     },
+        // ];
 
         // --- 逻辑控制 ---
         const ITEMS_PER_PAGE = 5;
@@ -583,6 +625,7 @@
                     <img src="${track.cover}" class="cover-art" alt="cover" onerror="this.style.backgroundColor='#eee'">
                     <div class="track-info">
                         <div class="track-title">${track.title}</div>
+                        <div class="track-artist">${track.artist}</div>
                         <div class="track-desc">${track.desc}</div>
                     </div>
                     <div class="control-group">
@@ -614,7 +657,19 @@
             if(currentPlayingUrl) updateProgressBarUI();
         }
 
-        // 全局拖动逻辑
+        // 修改：生成带链接的 a 标签
+        function renderDiscography() {
+            const grid = document.getElementById('disco-grid');
+            grid.innerHTML = discographyData.map(item => `
+                <a href="${item.link}" target="_blank" class="album-card">
+                    <img src="${item.cover}" class="album-cover" onerror="this.style.backgroundColor='#ddd'">
+                    <div class="album-title">${item.title}</div>
+                    <div class="album-artist">${item.artist}</div>
+                    <div class="album-role">${item.role}</div>
+                </a>
+            `).join('');
+        }
+
         document.addEventListener('mousemove', (e) => { if(isDragging && activeProgressWrapper) seekAudio(e, activeProgressWrapper); });
         document.addEventListener('mouseup', () => { isDragging = false; activeProgressWrapper = null; });
         document.addEventListener('touchmove', (e) => { if(isDragging && activeProgressWrapper) seekAudio(e, activeProgressWrapper); }, { passive: false });
@@ -651,14 +706,29 @@
         audio.addEventListener('timeupdate', updateProgressBarUI);
         audio.addEventListener('ended', renderTracks);
 
-        // 弹窗逻辑
-        const modal = document.getElementById('qr-modal');
-        const openBtns = [document.getElementById('header-contact-btn'), document.getElementById('card-contact-btn')];
-        const closeBtn = document.getElementById('close-modal');
+        const wechatModal = document.getElementById('wechat-modal');
+        const openWechatBtns = [document.getElementById('header-contact-btn'), document.getElementById('card-contact-btn')];
+        const closeWechatBtn = document.getElementById('close-wechat');
 
-        openBtns.forEach(btn => btn?.addEventListener('click', () => modal.classList.add('show')));
-        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+        openWechatBtns.forEach(btn => btn?.addEventListener('click', () => wechatModal.classList.add('show')));
+        closeWechatBtn.addEventListener('click', () => wechatModal.classList.remove('show'));
+        wechatModal.addEventListener('click', (e) => { if (e.target === wechatModal) wechatModal.classList.remove('show'); });
+
+        const discoModal = document.getElementById('disco-modal');
+        const openDiscoBtn = document.getElementById('open-disco-btn');
+        const closeDiscoBtn = document.getElementById('close-disco');
+
+        openDiscoBtn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            renderDiscography(); 
+            discoModal.classList.add('show');
+            document.body.style.overflow = 'hidden'; 
+        });
+
+        closeDiscoBtn.addEventListener('click', () => {
+            discoModal.classList.remove('show');
+            document.body.style.overflow = ''; 
+        });
 
         renderTracks();
     </script>
